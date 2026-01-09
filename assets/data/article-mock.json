@@ -1,0 +1,34 @@
+{
+    "articles": [
+        {
+            "id": "1",
+            "title": "Título Artigo 1",
+            "description": "Descrição do artigo",
+            "publisher": "Medium",
+            "published_at": "08-01-2026",
+            "is_favorite": "true",
+            "image_url": "url",
+            "article_original_link": "https://medium.com/blog/it-happened-on-medium-october-2025-roundup-eb1ed51c9bc2"
+        },
+        {
+            "id": "2",
+            "title": "Título Artigo 2",
+            "description": "Descrição do artigo",
+            "publisher": "Medium",
+            "published_at": "08-01-2026",
+            "is_favorite": "true",
+            "image_url": "url",
+            "original_link": "https://medium.com/blog/it-happened-on-medium-october-2025-roundup-eb1ed51c9bc2"
+        },
+        {
+            "id": "3",
+            "title": "Título Artigo 3",
+            "description": "Descrição do artigo",
+            "publisher": "Medium",
+            "published_at": "08-01-2026",
+            "is_favorite": "false",
+            "image_url": "url",
+            "original_link": "https://medium.com/blog/it-happened-on-medium-october-2025-roundup-eb1ed51c9bc2"
+        }
+    ]
+}

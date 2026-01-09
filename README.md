@@ -14,3 +14,18 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+lib/
+├─ main.dart
+├─ screens/
+│  ├─ home_screen.dart
+│  └─ login_screen.dart
+├─ widgets/
+│  ├─ custom_button.dart
+│  └─ app_header.dart
+├─ models/
+│  └─ user_model.dart
+├─ services/
+│  └─ auth_service.dart
+├─ utils/
+│  └─ constants.dart

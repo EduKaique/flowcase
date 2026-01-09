@@ -40,7 +40,7 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             FilledButton(
-              onPressed: () => Navigator.pushNamed(context, '/feed'),
+              onPressed: () => Navigator.pushNamed(context, '/home'),
               style: FilledButton.styleFrom(
                 minimumSize: Size(double.infinity, 48),
                 shape: RoundedRectangleBorder(

@@ -6,7 +6,6 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Notificações'), centerTitle: true),
       body: Padding(
         padding: EdgeInsetsGeometry.all(16.0),
         child: Column(

@@ -4,10 +4,10 @@ class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
 
   @override
-  _FavoroteScreenState createState() => _FavoroteScreenState();
+  State<FavoriteScreen> createState() => _FavoriteScreenState();
 }
 
-class _FavoroteScreenState extends State<FavoriteScreen> {
+class _FavoriteScreenState extends State<FavoriteScreen> {
   bool _isFavorite = true;
 
   void _toggleFavorite() {
@@ -19,7 +19,6 @@ class _FavoroteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Favoritos'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card.outlined(

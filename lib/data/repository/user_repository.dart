@@ -1,4 +1,4 @@
-import 'package:flowcase/models/user.dart';
+import 'package:flowcase/domain/models/user.dart';
 import 'package:flowcase/utils/result.dart';
 
 abstract class UserRepository {

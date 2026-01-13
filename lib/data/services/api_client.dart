@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flowcase/utils/result.dart';
 // import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
-import 'package:flowcase/models/article_api_model.dart';
+import 'package:flowcase/data/models/article_api_model.dart';
 
 class ApiClient {
   final String _baseUrl = 'assets/data';

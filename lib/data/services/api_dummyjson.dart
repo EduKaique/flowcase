@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flowcase/utils/result.dart';
-import 'package:flowcase/models/user_api_model.dart';
+import 'package:flowcase/data/models/user_api_model.dart';
 
 class ApiDummyjson {
   final String _baseUrl = 'https://dummyjson.com';

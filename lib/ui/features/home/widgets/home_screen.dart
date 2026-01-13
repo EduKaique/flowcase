@@ -1,4 +1,5 @@
 import 'package:flowcase/ui/features/home/widgets/feed_screen.dart';
+import 'package:flowcase/ui/features/profile/view_models/profile_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flowcase/ui/features/favorites/widgets/favorite_screen.dart';
@@ -6,7 +7,10 @@ import 'package:flowcase/ui/features/notifications/widgets/notification_screen.d
 import 'package:flowcase/ui/features/profile/widgets/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final ProfileViewModel profileViewModel;
+  
+  const HomeScreen({super.key, required this.profileViewModel});
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,12 +19,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _index = 0;
 
-  final _screens = const [
-    FeedScreen(),
-    FavoriteScreen(),
-    NotificationScreen(),
-    ProfileScreen(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   final _titles = const ['Feed', 'Favoritos', 'Notificações', 'Meu Perfil'];
 
@@ -28,6 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final List<Widget> screens = [
+       const FeedScreen(), 
+       const FavoriteScreen(),
+       const NotificationScreen(),
+       ProfileScreen(viewModel: widget.profileViewModel), 
+    ];
+
     return Scaffold(
       appBar: _isProfile
           ? null
@@ -51,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NavigationDestination(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
-      body: IndexedStack(index: _index, children: _screens),
+      body: IndexedStack(index: _index, children: screens),
     );
   }
 }

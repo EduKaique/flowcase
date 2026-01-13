@@ -1,7 +1,10 @@
+import 'package:flowcase/ui/features/profile/view_models/profile_view_model.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final ProfileViewModel viewModel;
+
+  const ProfileScreen({super.key, required this.viewModel});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -11,10 +14,12 @@ class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
+  final int id = 1; //id fake apenas para simular
 
   @override
   void initState() {
     super.initState();
+    widget.viewModel.loadUser(id);
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -80,25 +85,63 @@ class _ProfileScreenState extends State<ProfileScreen>
                 child: FlexibleSpaceBar(
                   centerTitle: false,
                   background: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 50.0,
-                          child: Image.asset(
-                            "assets/images/generic_avatar.png",
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Usuário da Silva',
-                          style: TextStyle(
-                            fontSize: Theme.of(
-                              context,
-                            ).textTheme.titleLarge!.fontSize,
-                          ),
-                        ),
-                      ],
+                    child: ListenableBuilder(
+                      listenable: widget.viewModel,
+                      builder: (context, child) {
+                        if (widget.viewModel.isLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        if (widget.viewModel.error != null) {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.error_outline,
+                                  color: Colors.red,
+                                  size: 48,
+                                ),
+                                Text('Erro: ${widget.viewModel.error}'),
+                                ElevatedButton(
+                                  onPressed: () =>
+                                      widget.viewModel.loadUser(id),
+                                  child: const Text("Tentar novamente"),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        if (widget.viewModel.user == null) {
+                          return const Center(
+                            child: Text("Nenhum dado de perfil encontrado."),
+                          );
+                        }
+
+                        final user = widget.viewModel.user!;
+
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 50.0,
+                              backgroundImage: NetworkImage(user.imageUrl),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              user.fullName,
+                              style: TextStyle(
+                                fontSize: Theme.of(
+                                  context,
+                                ).textTheme.titleLarge!.fontSize,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),

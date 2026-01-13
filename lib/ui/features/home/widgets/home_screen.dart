@@ -1,9 +1,9 @@
-import 'package:flowcase/screens/feed_screen.dart';
+import 'package:flowcase/ui/features/home/widgets/feed_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flowcase/screens/favorite_screen.dart';
-import 'package:flowcase/screens/notification_screen.dart';
-import 'package:flowcase/screens/profile_screen.dart';
+import 'package:flowcase/ui/features/favorites/widgets/favorite_screen.dart';
+import 'package:flowcase/ui/features/notifications/widgets/notification_screen.dart';
+import 'package:flowcase/ui/features/profile/widgets/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

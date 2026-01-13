@@ -1,9 +1,9 @@
 
-import 'package:flowcase/screens/setting_screen.dart';
+import 'package:flowcase/ui/features/settings/view_models/setting_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flowcase/screens/login_screen.dart';
-import 'package:flowcase/screens/home_screen.dart';
-import 'package:flowcase/screens/article_screen.dart';
+import 'package:flowcase/ui/features/auth/widgets/login_screen.dart';
+import 'package:flowcase/ui/features/home/widgets/home_screen.dart';
+import 'package:flowcase/ui/features/articles/widgets/article_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {

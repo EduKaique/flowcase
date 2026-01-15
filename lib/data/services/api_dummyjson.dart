@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flowcase/data/models/login_request.dart';
+import 'package:flowcase/data/models/login_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:flowcase/utils/result.dart';
 import 'package:flowcase/data/models/user_api_model.dart';
@@ -40,6 +43,27 @@ class ApiDummyjson {
         return Result.error(
           Exception('Falha ao buscar usuário $id: ${response.statusCode}'),
         );
+      }
+    } catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  Future<Result<LoginResponse>> login(LoginRequest loginRequest) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_baseUrl/auth/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(loginRequest)
+      );
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+        return Result.ok(LoginResponse.fromJson(decoded));
+      } else {
+        return Result.error(HttpException('Falha ao fazer login'));
       }
     } catch (e) {
       return Result.error(e);

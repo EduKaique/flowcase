@@ -1,43 +1,41 @@
-
-import 'package:flowcase/screens/setting_screen.dart';
+import 'package:flowcase/data/repository/auth/auth_repository_remote.dart';
+import 'package:flowcase/data/services/api_dummyjson.dart';
+import 'package:flowcase/data/services/secure_storage_service.dart';
+import 'package:flowcase/routing/router.dart';
 import 'package:flutter/material.dart';
-import 'package:flowcase/screens/login_screen.dart';
-import 'package:flowcase/screens/home_screen.dart';
-import 'package:flowcase/screens/article_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const MyApp());
+  final apiService = ApiDummyjson();
+  final storageService = SecureStorageService();
+  final authRepository = AuthRepositoryRemote(
+    api: apiService,
+    storage: storageService,
+  );
+
+  final goRouter = router(authRepository);
+
+  runApp(MyApp(router: goRouter));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final GoRouter router;
+
+  const MyApp({super.key, required this.router});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      title: 'FlowCase',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.tealAccent),
         fontFamily: GoogleFonts.roboto().fontFamily,
       ),
-      home: const HomeScreen(),
-      initialRoute: '/',
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/setting': (context) => const SettingScreen(),
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name != null && settings.name!.startsWith('/artigo/')) {
-          final id = settings.name!.split('/').last;
 
-          return MaterialPageRoute(builder: (context) => ArticleScreen(id: id));
-        }
-        return null;
-      },
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
     );
   }
 }
-

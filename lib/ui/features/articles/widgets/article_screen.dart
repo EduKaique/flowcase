@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ArticleScreen extends StatefulWidget {
-  final String id;
+  final int id;
   const ArticleScreen({super.key, required this.id});
 
   @override

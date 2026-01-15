@@ -1,7 +1,7 @@
-import 'package:flowcase/models/user.dart';
-import 'package:flowcase/models/user_api_model.dart';
-import 'package:flowcase/repository/user_repository.dart';
-import 'package:flowcase/services/api_dummyjson.dart';
+import 'package:flowcase/domain/models/user.dart';
+import 'package:flowcase/data/models/user_api_model.dart';
+import 'package:flowcase/data/repository/user/user_repository.dart';
+import 'package:flowcase/data/services/api_dummyjson.dart';
 import 'package:flowcase/utils/result.dart';
 
 class UserRepositoryRemote implements UserRepository {

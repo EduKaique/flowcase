@@ -1,53 +1,41 @@
-
-import 'package:flowcase/data/repository/user_repository.dart';
-import 'package:flowcase/data/repository/user_repository_remote.dart';
+import 'package:flowcase/data/repository/auth/auth_repository_remote.dart';
 import 'package:flowcase/data/services/api_dummyjson.dart';
-import 'package:flowcase/ui/features/profile/view_models/profile_view_model.dart';
-import 'package:flowcase/ui/features/settings/view_models/setting_screen.dart';
+import 'package:flowcase/data/services/secure_storage_service.dart';
+import 'package:flowcase/routing/router.dart';
 import 'package:flutter/material.dart';
-import 'package:flowcase/ui/features/auth/widgets/login_screen.dart';
-import 'package:flowcase/ui/features/home/widgets/home_screen.dart';
-import 'package:flowcase/ui/features/articles/widgets/article_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   final apiService = ApiDummyjson();
-  final userRepository = UserRepositoryRemote(api: apiService);
+  final storageService = SecureStorageService();
+  final authRepository = AuthRepositoryRemote(
+    api: apiService,
+    storage: storageService,
+  );
 
+  final goRouter = router(authRepository);
 
-  runApp(MyApp(userRepository: userRepository));
+  runApp(MyApp(router: goRouter));
 }
 
 class MyApp extends StatelessWidget {
-  final UserRepository userRepository;
+  final GoRouter router;
 
-  const MyApp({super.key, required this.userRepository});
+  const MyApp({super.key, required this.router});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      title: 'FlowCase',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.tealAccent),
         fontFamily: GoogleFonts.roboto().fontFamily,
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => HomeScreen(profileViewModel: ProfileViewModel(userRepository: userRepository)),
-        '/login': (context) => const LoginScreen(),
-        '/setting': (context) => const SettingScreen(),
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name != null && settings.name!.startsWith('/artigo/')) {
-          final id = settings.name!.split('/').last;
 
-          return MaterialPageRoute(builder: (context) => ArticleScreen(id: id));
-        }
-        return null;
-      },
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
     );
   }
 }
-

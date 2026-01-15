@@ -14,12 +14,11 @@ class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
-  final int id = 1; //id fake apenas para simular
 
   @override
   void initState() {
     super.initState();
-    widget.viewModel.loadUser(id);
+    widget.viewModel.loadUser();
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -28,6 +27,20 @@ class _ProfileScreenState extends State<ProfileScreen>
     _tabController.dispose();
     _buttonFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleLogout() async {
+    await widget.viewModel.logout();
+
+    if (!mounted) return;
+
+    if (widget.viewModel.error == null) {
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao sair: ${widget.viewModel.error}")),
+      );
+    }
   }
 
   @override
@@ -46,19 +59,21 @@ class _ProfileScreenState extends State<ProfileScreen>
                     MenuItemButton(
                       onPressed: () => Navigator.pushNamed(context, "/setting"),
                       child: const Row(
-                        spacing: 8.0,
-                        children: [Icon(Icons.settings), Text("Configurações")],
+                        children: [
+                          Icon(Icons.settings),
+                          SizedBox(width: 8),
+                          Text("Configurações"),
+                        ],
                       ),
                     ),
                     MenuItemButton(
-                      onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/login',
-                        (route) => false,
-                      ),
+                      onPressed: _handleLogout,
                       child: const Row(
-                        spacing: 8.0,
-                        children: [Icon(Icons.logout), Text("Sair")],
+                        children: [
+                          Icon(Icons.logout),
+                          SizedBox(width: 8),
+                          Text("Sair"),
+                        ],
                       ),
                     ),
                   ],
@@ -78,7 +93,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ],
               pinned: true,
-              floating: false,
               expandedHeight: 300.0,
               flexibleSpace: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -88,36 +102,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                     child: ListenableBuilder(
                       listenable: widget.viewModel,
                       builder: (context, child) {
-                        if (widget.viewModel.isLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        if (widget.viewModel.error != null) {
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.error_outline,
-                                  color: Colors.red,
-                                  size: 48,
-                                ),
-                                Text('Erro: ${widget.viewModel.error}'),
-                                ElevatedButton(
-                                  onPressed: () =>
-                                      widget.viewModel.loadUser(id),
-                                  child: const Text("Tentar novamente"),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-
                         if (widget.viewModel.user == null) {
-                          return const Center(
-                            child: Text("Nenhum dado de perfil encontrado."),
+                          return const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(height: 10),
+                              Text("Carregando perfil..."),
+                            ],
                           );
                         }
 
@@ -129,14 +121,18 @@ class _ProfileScreenState extends State<ProfileScreen>
                             CircleAvatar(
                               radius: 50.0,
                               backgroundImage: NetworkImage(user.imageUrl),
+                              onBackgroundImageError: (_, __) {},
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Text(
                               user.fullName,
                               style: TextStyle(
-                                fontSize: Theme.of(
-                                  context,
-                                ).textTheme.titleLarge!.fontSize,
+                                fontSize:
+                                    Theme.of(
+                                      context,
+                                    ).textTheme.titleLarge?.fontSize ??
+                                    20,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -158,9 +154,9 @@ class _ProfileScreenState extends State<ProfileScreen>
         },
         body: TabBarView(
           controller: _tabController,
-          children: [
-            const Center(child: Text('Minhas Publicações')),
-            const Center(child: Text('Conteúdo Salvo')),
+          children: const [
+            Center(child: Text('Minhas Publicações')),
+            Center(child: Text('Conteúdo Salvo')),
           ],
         ),
       ),

@@ -1,55 +1,39 @@
-import 'package:flowcase/ui/features/home/widgets/feed_screen.dart';
-import 'package:flowcase/ui/features/profile/view_models/profile_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import 'package:flowcase/ui/features/favorites/widgets/favorite_screen.dart';
-import 'package:flowcase/ui/features/notifications/widgets/notification_screen.dart';
-import 'package:flowcase/ui/features/profile/widgets/profile_screen.dart';
+// Agora é StatelessWidget, muito mais leve!
+class HomeWrapperScreen extends StatelessWidget {
+  // Recebemos o controlador de navegação do GoRouter
+  final StatefulNavigationShell navigationShell;
 
-class HomeScreen extends StatefulWidget {
-  final ProfileViewModel profileViewModel;
-  
-  const HomeScreen({super.key, required this.profileViewModel});
-
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _index = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  final _titles = const ['Feed', 'Favoritos', 'Notificações', 'Meu Perfil'];
-
-  bool get _isProfile => _index == 3;
+  const HomeWrapperScreen({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context) {
-
-    final List<Widget> screens = [
-       const FeedScreen(), 
-       const FavoriteScreen(),
-       const NotificationScreen(),
-       ProfileScreen(viewModel: widget.profileViewModel), 
-    ];
+    final titles = const ['Feed', 'Favoritos', 'Notificações', 'Meu Perfil'];
+    
+    final int index = navigationShell.currentIndex;
+    
+    final bool isProfile = index == 3;
 
     return Scaffold(
-      appBar: _isProfile
+      body: navigationShell,
+      
+      appBar: isProfile
           ? null
           : AppBar(
-              title: Text(_titles[_index]),
+              title: Text(titles[index]),
               centerTitle: true,
               automaticallyImplyLeading: false,
             ),
+            
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) {
-          setState(() => _index = i);
+        selectedIndex: index,
+        onDestinationSelected: (tappedIndex) {
+          navigationShell.goBranch(
+            tappedIndex,
+            initialLocation: tappedIndex == navigationShell.currentIndex,
+          );
         },
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: 'Feed'),
@@ -61,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
           NavigationDestination(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
-      body: IndexedStack(index: _index, children: screens),
     );
   }
 }

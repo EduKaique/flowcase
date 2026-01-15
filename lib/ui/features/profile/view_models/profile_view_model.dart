@@ -1,13 +1,13 @@
-import 'package:flowcase/data/repository/user_repository.dart';
+import 'package:flowcase/data/repository/auth/auth_repository_remote.dart';
 import 'package:flowcase/domain/models/user.dart';
 import 'package:flowcase/utils/result.dart';
 import 'package:flutter/foundation.dart';
 
 class ProfileViewModel extends ChangeNotifier {
-  final UserRepository _userRepository;
+  final AuthRepositoryRemote _authRepository;
 
-  ProfileViewModel({required UserRepository userRepository})
-    : _userRepository = userRepository;
+  ProfileViewModel({required AuthRepositoryRemote authRepository})
+    : _authRepository = authRepository;
 
   // Exemplo caso fosse com lista
   // List<User> _users = [];
@@ -22,25 +22,29 @@ class ProfileViewModel extends ChangeNotifier {
   String? _error;
   String? get error => _error;
 
-  Future<void> loadUser(int id) async {
+  Future<void> loadUser() async {
+    _user = _authRepository.currentUser;
+    notifyListeners();
+  }
+
+  Future<void> logout() async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      final result = await _userRepository.getUser(id);
+      final result = await _authRepository.logout();
 
       switch (result) {
-        case Ok<User>():
-          _user = result.value;
-
-        case Error():
+        case Ok<void>():
+          print('Logout realizado com sucesso');
+        case Error<void>():
           _error = result.error.toString();
-      } 
+        //log aqui
+      }
     } finally {
-        _isLoading = false;
-        notifyListeners();
+      _isLoading = false;
+      notifyListeners();
     }
   }
-
 }

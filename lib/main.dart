@@ -2,9 +2,9 @@ import 'package:flowcase/data/repository/auth/auth_repository_remote.dart';
 import 'package:flowcase/data/services/api_dummyjson.dart';
 import 'package:flowcase/data/services/secure_storage_service.dart';
 import 'package:flowcase/routing/router.dart';
+import 'package:flowcase/ui/core/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   final apiService = ApiDummyjson();
@@ -29,11 +29,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'FlowCase',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.tealAccent),
-        fontFamily: GoogleFonts.roboto().fontFamily,
-      ),
-
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
     );

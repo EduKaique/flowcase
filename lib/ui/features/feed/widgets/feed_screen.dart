@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});
@@ -17,7 +18,9 @@ class FeedScreen extends StatelessWidget {
               children: [
                 Card.outlined(
                   child: ListTile(
-                    onTap: () => Navigator.of(context).pushNamed('/artigo/1'),
+                    onTap: () {
+                      context.push('/article/1');
+                    },
                     title: Text('User Name'),
                     subtitle: Text('This is a sample post in the feed.'),
                     trailing: ClipRRect(

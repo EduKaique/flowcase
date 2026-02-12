@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -23,7 +24,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Card.outlined(
           child: ListTile(
-            onTap: () => Navigator.of(context).pushNamed('/artigo/1'),
+            onTap: () {
+              context.push('/article/1');
+            },
             leading: IconButton(
               icon: Icon(
                 _isFavorite ? Icons.favorite : Icons.favorite_border,

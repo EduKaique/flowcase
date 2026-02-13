@@ -1,3 +1,4 @@
+import 'package:flowcase/ui/features/feed/widgets/card_article.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,6 +17,7 @@ class FeedScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 16.0,
               children: [
+                CardArticle(),
                 Card.outlined(
                   child: ListTile(
                     onTap: () {

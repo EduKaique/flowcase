@@ -2,6 +2,7 @@ import 'package:flowcase/data/repository/auth/auth_repository_remote.dart';
 import 'package:flowcase/domain/models/user.dart';
 import 'package:flowcase/utils/result.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:developer';
 
 class ProfileViewModel extends ChangeNotifier {
   final AuthRepositoryRemote _authRepository;
@@ -37,7 +38,7 @@ class ProfileViewModel extends ChangeNotifier {
 
       switch (result) {
         case Ok<void>():
-          print('Logout realizado com sucesso');
+          log('Logout realizado com sucesso');
         case Error<void>():
           _error = result.error.toString();
         //log aqui

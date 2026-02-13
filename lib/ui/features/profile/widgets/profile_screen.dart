@@ -121,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             CircleAvatar(
                               radius: 50.0,
                               backgroundImage: NetworkImage(user.imageUrl),
-                              onBackgroundImageError: (_, __) {},
+                              onBackgroundImageError: (_, _) {},
                             ),
                             const SizedBox(height: 10),
                             Text(
